@@ -1,35 +1,12 @@
-from technical_heroes import findOverallTechnicalDevelopers
-from socialHeroes import findSocialHerosBasedOnComments
-from technoSocialHeroes import findTechnoSocialHerosBasedOnComments
-from pymongo import MongoClient
-from NewComers import findNewComers
-from centralities import eigenVectorCentralityForTechnicalCollab
-
-
-cluster = MongoClient("mongodb://localhost:27017")
-db = cluster["smartshark"]
-project = db['project']
-commit_with_project_info = db['commit_with_project_info']
-
-# for a in project.find({}):
-#     print(a["name"])
-#     print(findSocialHerosBasedOnComments(a["name"]))
-
-# findOverallTechnicalDevelopers("kafka")
 # projectList = ["freemarker","httpcomponents-core","httpcomponents-client","santuario-java",
 #                "commons-bcel", "commons-vfs", "commons-validator", "commons-io",
 #                "commons-collections", "xerces2-j"]
-#
-# for a in projectList:
-#     print("=====================================")
-#     print(a)
-#     print("=====================================")
-#     findTechnoSocialHerosBasedOnComments(a)
 
+from networkx_utils import create_and_get_collaboration_graph, beautiful_graph
+from newcomers_social_collaboration_graph import create_and_get_social_collaboration_dict
+from newcomers_technical_collaboration_graph import createAndGetCollaborationDict
+from centralities import eigenVectorCentralityForTechnicalCollab, eigenVectorCentralityForSocialCollab, degreeCentralityForTechnicalCollab, degreeCentralityForSocialCollab
+beautiful_graph(create_and_get_collaboration_graph(createAndGetCollaborationDict("kafka")))
+beautiful_graph(create_and_get_collaboration_graph(create_and_get_social_collaboration_dict("kafka")))
 
-# print(len(findNewComers("pig")))
-# print(len(eigenVectorCentralityForTechnicalCollab("pig")))
-
-
-
-# findTechnoSocialHerosBasedOnComments("freemarker")
+eigenVectorCentralityForTechnicalCollab("kafka")
