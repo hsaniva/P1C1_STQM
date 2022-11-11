@@ -10,17 +10,17 @@ def eigenVectorCentralityForTechnicalCollab(projectName):
 
     eigenCentralities = nx.eigenvector_centrality(G)
 
-    for devId, centrality in eigenCentralities.items():
-        print(devId ," -> ", centrality)
-    return eigenCentralities
+    # for devId, centrality in eigenCentralities.items():
+    #     print(devId ," -> ", centrality)
+    return list(eigenCentralities.items())
 
 def degreeCentralityForTechnicalCollab(projectName):
     d = createAndGetCollaborationDict(projectName)
     G = create_and_get_collaboration_graph(d)
 
     degreeCentralities = nx.degree_centrality(G)
-    for devId, centrality in degreeCentralities.items():
-        print(devId, " -> ", centrality)
+    # for devId, centrality in degreeCentralities.items():
+    #     print(devId, " -> ", centrality)
 
     return degreeCentralities
 
@@ -30,8 +30,8 @@ def eigenVectorCentralityForSocialCollab(projectName):
 
     eigenCentralities = nx.eigenvector_centrality(G)
 
-    for devId, centrality in eigenCentralities.items():
-        print(devId ," -> ", centrality)
+    # for devId, centrality in eigenCentralities.items():
+    #     print(devId ," -> ", centrality)
     return eigenCentralities
 
 def degreeCentralityForSocialCollab(projectName):
@@ -39,8 +39,8 @@ def degreeCentralityForSocialCollab(projectName):
     G = create_and_get_collaboration_graph(d)
 
     degreeCentralities = nx.degree_centrality(G)
-    for devId, centrality in degreeCentralities.items():
-        print(devId, " -> ", centrality)
+    # for devId, centrality in degreeCentralities.items():
+    #     print(devId, " -> ", centrality)
 
     return degreeCentralities
 
