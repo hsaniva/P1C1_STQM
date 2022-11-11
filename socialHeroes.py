@@ -46,6 +46,7 @@ def findSocialHerosBasedOnComments(projectName):
     ans["social_hero_devs"] = len(heroDevs)
     ans["total_devs"] = totalDevs
     ans["social_hero_dev_percentage"] = (len(heroDevs) / totalDevs) * 100
+    ans["social_hero_list"] = heroDevs
     # print("Hero Devs : ", len(heroDevs))
     # print("Total devs in Kafka : ", totalDevs)
     # print("Dev percentage : ", (len(heroDevs) / totalDevs) * 100)
