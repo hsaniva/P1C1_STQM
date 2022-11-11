@@ -51,4 +51,4 @@ def findSocioTechnicalHeros(projectName):
     # print(socioTechnicalHeros)
     return socioTechnicalHeros
 
-findSocioTechnicalHeros("commons-math")
+# findSocioTechnicalHeros("kafka")
