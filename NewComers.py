@@ -35,13 +35,13 @@ def findNewComers(projectName):
 
     newComers = SixMonthsDevs.difference(first3YearDevs)
 
-    print("Total Number of Experienced Devs : ", len(first3YearDevs))
-    print("Total Number of Newcomers along with experienced Devs : ", len(SixMonthsDevs))
-    print("Total Number of NewComers : ", len(newComers))
-    print("--------------------------\nNew comers\n--------------------------")
-    input("Press any key to continue")
-    for auto in newComers:
-        print(auto)
+    # print("Total Number of Experienced Devs : ", len(first3YearDevs))
+    # print("Total Number of Newcomers along with experienced Devs : ", len(SixMonthsDevs))
+    # print("Total Number of NewComers : ", len(newComers))
+    # print("--------------------------\nNew comers\n--------------------------")
+    # input("Press any key to continue")
+    # for auto in newComers:
+    #     print(auto)
 
     return newComers
 
@@ -57,5 +57,5 @@ def getDates(projectName):
 
     return sDate, eDate
 
-projectName = input("Enter project name: ")
-findNewComers(projectName)
+# projectName = input("Enter project name: ")
+# findNewComers(projectName)
