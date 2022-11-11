@@ -7,7 +7,7 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import itertools
 
-def beatiful_graph(parentGraph):
+def beautiful_graph(parentGraph):
     rcParams['figure.figsize'] = 14, 10
     pos = nx.spring_layout(parentGraph, scale=20, k=3 / np.sqrt(parentGraph.order()))
     d = dict(parentGraph.degree)
