@@ -1,6 +1,5 @@
 import networkx as nx
 import numpy as np
-from bson import ObjectId
 from pylab import rcParams
 import matplotlib
 matplotlib.use('TkAgg')
