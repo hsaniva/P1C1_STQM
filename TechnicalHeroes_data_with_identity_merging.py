@@ -2,7 +2,7 @@ import time
 
 from pymongo import MongoClient
 
-from identity_merging.Build_reverse_identity_dictionary import Build_reverse_identity_dictionary
+from Build_reverse_identity_dictionary import Build_reverse_identity_dictionary
 
 
 class TechnicalHeroes_data:

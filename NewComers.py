@@ -1,7 +1,10 @@
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from pymongo import MongoClient
-from dateutil.parser import parse
+from Build_reverse_identity_dictionary import Build_reverse_identity_dictionary
+BRID = Build_reverse_identity_dictionary()
+BRID.reading_identity_and_people_and_building_reverse_identity_dictionary()
+
 
 cluster = MongoClient("mongodb://localhost:27017")
 db = cluster["smartshark"]
@@ -22,7 +25,7 @@ def findNewComers(projectName):
 
     SixMonthsDevs = set()
     for a in commitsIn6MonthsDevs:
-        SixMonthsDevs.add(a['author_id'])
+        SixMonthsDevs.add(BRID.reverse_identity_dict[a['author_id']])
 
     commitsIn3Years = commit_with_project_info.find({
         "project_id_info.project_id": projectDetails['_id'],
@@ -31,7 +34,7 @@ def findNewComers(projectName):
         }}, {"author_id": 1})
     first3YearDevs = set()
     for a in commitsIn3Years:
-        first3YearDevs.add(a['author_id'])
+        first3YearDevs.add(BRID.reverse_identity_dict[a['author_id']])
 
     newComers = SixMonthsDevs.difference(first3YearDevs)
 
@@ -56,4 +59,3 @@ def getDates(projectName):
         eDate = sDate + relativedelta(months=6)
 
     return sDate, eDate
-

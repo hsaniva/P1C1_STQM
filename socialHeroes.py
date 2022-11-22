@@ -1,7 +1,9 @@
 from collections import defaultdict
-from datetime import datetime
-
 from pymongo import MongoClient
+from Build_reverse_identity_dictionary import Build_reverse_identity_dictionary
+
+BRID = Build_reverse_identity_dictionary()
+BRID.reading_identity_and_people_and_building_reverse_identity_dictionary()
 
 cluster = MongoClient("mongodb://localhost:27017")
 db = cluster["smartshark"]
@@ -42,6 +44,7 @@ def findSocialHerosBasedOnComments(projectName):
 
     totalDevs = issue_with_project_info_collection.count_documents({"project_id_info.project_id": projectDetails['_id'],
                                                                     "assignee_id": {"$exists": True}})
+
     ans = dict()
     ans["social_hero_devs"] = len(heroDevs)
     ans["total_devs"] = totalDevs
@@ -51,6 +54,3 @@ def findSocialHerosBasedOnComments(projectName):
     # print("Total devs in Kafka : ", totalDevs)
     # print("Dev percentage : ", (len(heroDevs) / totalDevs) * 100)
     return ans
-
-print(findSocialHerosBasedOnComments("commons-math"))
-
