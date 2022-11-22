@@ -52,5 +52,5 @@ def findSocialHerosBasedOnComments(projectName):
     # print("Dev percentage : ", (len(heroDevs) / totalDevs) * 100)
     return ans
 
-# print(findSocialHerosBasedOnComments("commons-math"))
+print(findSocialHerosBasedOnComments("commons-math"))
 

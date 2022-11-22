@@ -259,4 +259,5 @@ def findOverallTechnicalDevelopers(projectName):
     return ans
     # return heroDevsOverall
 
+print(findOverallTechnicalDevelopers("kafka"))
 
