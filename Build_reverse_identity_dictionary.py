@@ -1,7 +1,7 @@
 import time
 
 from pymongo import MongoClient
-
+from collections import defaultdict
 
 class Build_reverse_identity_dictionary:
     def __init__(self):
@@ -17,6 +17,7 @@ class Build_reverse_identity_dictionary:
         self.people_records = list(self.people_data.find({}))
         self.identity_records = list(self.identity_data.find({}))
         self.reverse_identity_dict = dict()
+        self.identity_dict = defaultdict(list)
 
     def reading_identity_and_people_and_building_reverse_identity_dictionary(self):
         for identity_element in self.identity_records:
@@ -24,6 +25,7 @@ class Build_reverse_identity_dictionary:
             people_list = identity_element["people"]
             for person in people_list:
                 self.reverse_identity_dict[person] = identity
+                self.identity_dict[identity].append(person)
 
     def print_identity_resolution_table(self):
         print(f"number of people in the dictionary is : {len(self.reverse_identity_dict.keys())}")

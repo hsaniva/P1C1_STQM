@@ -6,7 +6,7 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import itertools
 
-def beautiful_graph(parentGraph):
+def plot_graph(parentGraph):
     rcParams['figure.figsize'] = 14, 10
     pos = nx.spring_layout(parentGraph, scale=20, k=3 / np.sqrt(parentGraph.order()))
     d = dict(parentGraph.degree)
@@ -17,9 +17,9 @@ def beautiful_graph(parentGraph):
     plt.show()
 
 
-def create_and_get_collaboration_graph(G):
+def generate_graph(dictionary):
     parent_graph = nx.Graph()
-    for fileName, devs in G.items():
+    for key, devs in dictionary.items():
         temp_graph = nx.Graph()
         for dev in devs:
             temp_graph.add_node(dev)

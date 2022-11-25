@@ -3,6 +3,9 @@ import socialHeroes
 import socioTechnical_Heros
 import technical_heroes
 import technoSocialHeroes
+from newcomers_relations_with_heroes import create_and_get_social_collaboration_dict_heroes, \
+    newcomers_heroes_social_graphs_relation, correlation_of_degree_of_newcomer_becoming_heroes
+from newcomers_social_collaboration_graph import create_and_get_social_collaboration_dict_newcomers
 from superHeros import findSuperHeros
 
 
@@ -101,24 +104,18 @@ def print_super_heroes(project_name):
     print("Super Heroes are : ", len(super_heroes))
     print(super_heroes)
 
-print_super_heroes("kafka")
-# projectList = ["freemarker","httpcomponents-core","httpcomponents-client","santuario-java",
-#                "commons-bcel", "commons-vfs", "commons-validator", "commons-io",
-#                "commons-collections", "xerces2-j"]
-# import socialHeroes
-from networkx_utils import create_and_get_collaboration_graph, beautiful_graph
-from newcomers_social_collaboration_graph import create_and_get_social_collaboration_dict
-from newcomers_technical_collaboration_graph import createAndGetCollaborationDict
-from centralities import eigenVectorCentralityForTechnicalCollab, eigenVectorCentralityForSocialCollab, degreeCentralityForTechnicalCollab, degreeCentralityForSocialCollab
-# beautiful_graph(create_and_get_collaboration_graph(createAndGetCollaborationDict("kafka")))
-# beautiful_graph(create_and_get_collaboration_graph(create_and_get_social_collaboration_dict("kafka")))
+def newcomer_degree_relation_due_to_heroes(project_name):
+    return newcomers_heroes_social_graphs_relation(project_name)
 
-# print(eigenVectorCentralityForTechnicalCollab("kafka"))
-# print(socialHeroes.findSocialHerosBasedOnComments("kafka"))
+def print_newcomer_degree_relation_due_to_heroes(project_name):
+    for key, value in newcomer_degree_relation_due_to_heroes(project_name).items():
+        print(key, value)
 
-# for a in NewComers.findNewComers("kafka"):
-#     print(a)
-# from socialHeroes import findSocialHerosBasedOnComments
-#
-# print(findSocialHerosBasedOnComments("kafka"))
+def get_correlation_of_degree_of_newcomer_becoming_heroes(project_name):
+    return correlation_of_degree_of_newcomer_becoming_heroes(project_name)
 
+def print_get_correlation_of_degree_of_newcomer_becoming_heroes(project_name):
+    print("Correlation coefficient of newcomer degree ",
+          get_correlation_of_degree_of_newcomer_becoming_heroes(project_name))
+
+print_get_correlation_of_degree_of_newcomer_becoming_heroes("kafka")

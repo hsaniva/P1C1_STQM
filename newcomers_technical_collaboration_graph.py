@@ -9,7 +9,7 @@ file_action = db["file_action"]
 file = db["file"]
 
 
-def createAndGetCollaborationDict(projectName):
+def create_and_get_technical_collaboration_dict_newcomers(projectName):
     newComers = findNewComers(projectName)
     file_devs_dict = defaultdict(set)
 
