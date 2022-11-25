@@ -1,4 +1,8 @@
+from collections import defaultdict
+
 from pymongo import MongoClient
+
+from Build_reverse_identity_dictionary import Build_reverse_identity_dictionary
 from technical_heroes import findOverallTechnicalDevelopers
 from socialHeroes import findSocialHerosBasedOnComments
 
@@ -8,6 +12,9 @@ db = cluster["smartshark"]
 projectCollection = db["project"]
 commit_with_projectInfo_Collection = db['commit_with_project_info']
 
+BRID = Build_reverse_identity_dictionary()
+BRID.reading_identity_and_people_and_building_reverse_identity_dictionary()
+
 def findMedian(l):
     # print("Developer comment length : ", len(l))
     mid = len(l) // 2
@@ -16,39 +23,30 @@ def findMedian(l):
 
 def findSocioTechnicalHeros(projectName):
     socialHeroes = findSocialHerosBasedOnComments(projectName)
-    print("Social Heroes : ", len(socialHeroes["social_hero_list"]))
-
     projectDetails = projectCollection.find_one({"name": projectName})
     committersWithCount = commit_with_projectInfo_Collection.aggregate([
         {"$match": {"project_id_info.project_id": projectDetails['_id']}},
         {"$group": {"_id": "$author_id", "commitCount": {"$sum": 1}}}
     ])
 
-    # Number of commits done by each developer in Project
-    developersCommitCount = []
+    # Number of commits done by each developer in Kafka Project
+    developersCommitCount = defaultdict(int)
     for entry in committersWithCount:
-        developersCommitCount.append([entry['_id'], entry['commitCount']])
-    # print(entry['_id'], " -> ", entry['count'])
+        developersCommitCount[BRID.reverse_identity_dict[entry['_id']]] += entry['commitCount']
 
-    developersCommitCount.sort(key=lambda x: x[1], reverse=True)
+    developersCommitCountList = []
+    for key, value in developersCommitCount.items():
+        developersCommitCountList.append([key, value])
 
-    median = findMedian(developersCommitCount)
-    print("---------------------------------------")
-    print("Median number of commits :- ", median)
-    print("---------------------------------------")
+    developersCommitCountList.sort(key=lambda x: x[1], reverse=True)
 
+    median = findMedian(developersCommitCountList)
     technicalHerosAboveMedian = set()
 
     i = 0
-    while developersCommitCount[i][1] > median and i < len(developersCommitCount):
-        technicalHerosAboveMedian.add(developersCommitCount[i][0])
+    while developersCommitCountList[i][1] > median and i < len(developersCommitCountList):
+        technicalHerosAboveMedian.add(developersCommitCountList[i][0])
         i += 1
 
-    # print(socialHerosAboveMedian)
-    socioTechnicalHeros = technicalHerosAboveMedian.intersection(socialHeroes["social_hero_list"])
-
-    print("Total number of socioTechnical Heros: ", len(socioTechnicalHeros))
-    # print(socioTechnicalHeros)
+    socioTechnicalHeros = technicalHerosAboveMedian.intersection(socialHeroes)
     return socioTechnicalHeros
-
-# findSocioTechnicalHeros("kafka")

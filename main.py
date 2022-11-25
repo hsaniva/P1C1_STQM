@@ -1,5 +1,6 @@
 import NewComers
 import socialHeroes
+import socioTechnical_Heros
 import technical_heroes
 
 
@@ -65,7 +66,15 @@ def print_social_developers(project_name):
     print(heroDevs)
     print("--------------------------------------------------")
 
-print_social_developers("kafka")
+def get_socio_technical_heroes(project_name):
+    return socioTechnical_Heros.findSocioTechnicalHeros(project_name)
+
+def print_socio_technical_heroes(project_name):
+    hero_devs = get_socio_technical_heroes(project_name)
+    print("Total number of socioTechnical Heros: ", len(hero_devs))
+
+print_socio_technical_heroes("commons-collections")
+# print_social_developers("kafka")
 # print_technical_hero_devs_based_on_commit("kafka")
 
 # print(socialHeroes.findSocialHerosBasedOnComments("kafka"))
