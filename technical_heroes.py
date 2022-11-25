@@ -8,6 +8,8 @@ import numpy as np
 from pylab import rcParams
 from pymongo import MongoClient
 
+from Build_reverse_identity_dictionary import Build_reverse_identity_dictionary
+
 cluster = MongoClient("mongodb://localhost:27017")
 
 db = cluster["smartshark"]
@@ -16,9 +18,11 @@ projectCollections = db["project"]
 commit_with_projectInfo_Collection = db['commit_with_project_info']
 file_action_Collection = db["file_action"]
 
-totalDevlopersInProject = 0
-developerCommits = defaultdict(set)
+total_developers_in_project = 0
+# developerCommits = defaultdict(set)
 
+BRID = Build_reverse_identity_dictionary()
+BRID.reading_identity_and_people_and_building_reverse_identity_dictionary()
 
 def getTotalDevelopers(projectName):
     projectDetails = projectCollections.find_one({"name": projectName})
@@ -27,17 +31,15 @@ def getTotalDevelopers(projectName):
         {"$group": {"_id": "$author_id", "commitCount": {"$sum": 1}}}
     ])
 
-    developersCommitCount = []
+    developersCommitCount = defaultdict(int)
     for entry in committersWithCount:
-        developersCommitCount.append([entry['_id'], entry['commitCount']])
+        developersCommitCount[BRID.reverse_identity_dict[entry['_id']]] += entry['commitCount']
 
     return len(developersCommitCount)
 
 
 def findHeroDevsBasedOnCommits(projectName):
     projectDetails = projectCollections.find_one({"name": projectName})
-    # print(projectDetails)
-    # Reference of commit_with_project_info collection
 
     committersWithCount = commit_with_projectInfo_Collection.aggregate([
         {"$match": {"project_id_info.project_id": projectDetails['_id']}},
@@ -45,13 +47,15 @@ def findHeroDevsBasedOnCommits(projectName):
     ])
 
     # Number of commits done by each developer in Kafka Project
-
-    developersCommitCount = []
+    developersCommitCount = defaultdict(int)
     for entry in committersWithCount:
-        developersCommitCount.append([entry['_id'], entry['commitCount']])
-    # print(entry['_id'], " -> ", entry['count'])
+        developersCommitCount[BRID.reverse_identity_dict[entry['_id']]] += entry['commitCount']
 
-    developersCommitCount.sort(key=lambda x: x[1], reverse=True)
+    developersCommitCountList = []
+    for key, value in developersCommitCount.items():
+        developersCommitCountList.append([key, value])
+
+    developersCommitCountList.sort(key=lambda x: x[1], reverse=True)
 
     totalCommitsInProject = commit_with_projectInfo_Collection.count_documents(
         {"project_id_info.project_id": projectDetails['_id']})
@@ -63,17 +67,9 @@ def findHeroDevsBasedOnCommits(projectName):
     heroDevsBasedOnCommit = set()
     i = 0
     while (tempCommit <= percent80_commits):
-        tempCommit += int(developersCommitCount[i][1])
-        heroDevsBasedOnCommit.add(developersCommitCount[i][0])
+        tempCommit += int(developersCommitCountList[i][1])
+        heroDevsBasedOnCommit.add(developersCommitCountList[i][0])
         i += 1
-
-    # print(heroDevsBasedOnCommit)
-    totalDevs = getTotalDevelopers(projectName)
-
-    print("Hero Developers : ", len(heroDevsBasedOnCommit))
-    print("Total Developers in Project : ", totalDevs)
-    print("Hero developer in Project by %: ", (len(heroDevsBasedOnCommit) / totalDevs) * 100)
-    print("------------------------------------------------------------")
 
     return heroDevsBasedOnCommit
 
@@ -82,6 +78,12 @@ def findHeroDevsBasedOnCommits(projectName):
 Find list of commits done by each developer
 """
 
+def __get_developers_commits(project_id):
+    developerCommits = defaultdict(set)
+    commits = commit_with_projectInfo_Collection.find({"project_id_info.project_id": project_id})
+    for commit in commits:
+        developerCommits[BRID.reverse_identity_dict[commit['author_id']]].add(commit['_id'])
+    return developerCommits
 
 def findHeroDevsBasedOnFiles(projectName):
     projectDetails = projectCollections.find_one({"name": projectName})
@@ -90,37 +92,21 @@ def findHeroDevsBasedOnFiles(projectName):
     #     developer1 : [commit_1, commit_2, ....],
     #     developer2 : [commit_1, commit_2, ....],
     # }
-
-    commits = commit_with_projectInfo_Collection.find({"project_id_info.project_id": projectDetails['_id']})
-    for commit in commits:
-        # print(commit)
-        developerCommits[commit['author_id']].add(commit['_id'])
-
-    # totalFileModifications = file_action_Collection.count_documents({})
-    # print(totalFileModifications)
-
     # Number of files updated by each developer
-
     developerFilesDict = defaultdict(int)
-
+    developerCommits = __get_developers_commits(projectDetails["_id"])
     for developerId, commitList in developerCommits.items():
         for commitId in commitList:
-            # print(commitId)
             no_of_files_Modified = file_action_Collection.count_documents({"commit_id": {"$eq": commitId}})
             developerFilesDict[developerId] += no_of_files_Modified
-
-    # print(developerFilesDict)
 
     developerFilesCount = list(developerFilesDict.items())
     developerFilesCount.sort(key=lambda x: x[1], reverse=True)
 
     """Total File Modifications in Project"""
-
     totalFileModifications = 0
     for entry in developerFilesCount:
         totalFileModifications += entry[1]
-
-    print("Total File modifications in Project : ", totalFileModifications)
 
     percent80_Files = totalFileModifications * 0.8
 
@@ -131,14 +117,6 @@ def findHeroDevsBasedOnFiles(projectName):
         tempFiles += int(developerFilesCount[i][1])
         heroDevsBasedOnFiles.add(developerFilesCount[i][0])
         i += 1
-
-    # print(heroDevsBasedOnFiles)
-    totalDevs = getTotalDevelopers(projectName)
-
-    print("Hero Developers : ", len(heroDevsBasedOnFiles))
-    print("Total Developers in Project : ", totalDevs)
-    print("Hero developer in project by % : ", (len(heroDevsBasedOnFiles) / totalDevs) * 100)
-    print("--------------------------------------------------")
 
     return heroDevsBasedOnFiles
 
@@ -154,33 +132,11 @@ def findHeroDevsBasedOnLines(projectName):
     #     developer1 : numberOfLinesAdded,
     #     developer2 : numberOfLinesAdded,
     # }
-
-    queryOutput = file_action_Collection.aggregate([
-        {
-            "$group": {
-                "_id": {},
-                "sum_lines_added": {
-                    "$sum": "$lines_added"
-                }
-            }
-        },
-        {
-            "$project": {
-                "sum_lines_added": 1,
-                "_id": 0
-            }
-        }])
-
-    totalLinesModifications = 0
-    for data in queryOutput:
-        totalLinesModifications = data['sum_lines_added']
-
-    # print(totalLinesModifications)
-
     """Find number of lines changed by each developer in each commmit"""
 
     developerLinesDict = defaultdict(int)
-
+    projectDetails = projectCollections.find_one({"name": projectName})
+    developerCommits = __get_developers_commits(projectDetails["_id"])
     for developerId, commitList in developerCommits.items():
         count = 0
         for commitId in commitList:
@@ -208,7 +164,6 @@ def findHeroDevsBasedOnLines(projectName):
         developerLinesDict[developerId] = count
 
     developerLinesCount = list(developerLinesDict.items())
-
     developerLinesCount.sort(key=lambda x: x[1], reverse=True)
 
     """Total Lines added in Project Kafka"""
@@ -217,7 +172,6 @@ def findHeroDevsBasedOnLines(projectName):
     for devId, linescount in developerLinesDict.items():
         totalLinesWritten += linescount
 
-    print("Total lines written in project : ", totalLinesWritten)
 
     percent80_Lines = totalLinesWritten * 0.8
 
@@ -228,14 +182,6 @@ def findHeroDevsBasedOnLines(projectName):
         tempLines += int(developerLinesCount[i][1])
         heroDevsBasedOnLines.add(developerLinesCount[i][0])
         i += 1
-
-    # print(heroDevsBasedOnLines)
-
-    totalDevs = getTotalDevelopers(projectName)
-    print("Hero Developers : ", len(heroDevsBasedOnLines))
-    print("Total Developers in project : ", totalDevs)
-    print("Hero developer in project by % : ", (len(heroDevsBasedOnLines) / totalDevs) * 100)
-    print("--------------------------------------------------")
 
     return heroDevsBasedOnLines
 
@@ -257,7 +203,3 @@ def findOverallTechnicalDevelopers(projectName):
     ans["heroDevsOverall"] = len(heroDevsOverall)
     ans["heroDevsList"] = heroDevsOverall
     return ans
-    # return heroDevsOverall
-
-print(findOverallTechnicalDevelopers("kafka"))
-

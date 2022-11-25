@@ -2,9 +2,9 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from pymongo import MongoClient
 from Build_reverse_identity_dictionary import Build_reverse_identity_dictionary
+
 BRID = Build_reverse_identity_dictionary()
 BRID.reading_identity_and_people_and_building_reverse_identity_dictionary()
-
 
 cluster = MongoClient("mongodb://localhost:27017")
 db = cluster["smartshark"]
