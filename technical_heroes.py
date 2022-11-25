@@ -26,16 +26,15 @@ BRID.reading_identity_and_people_and_building_reverse_identity_dictionary()
 
 def getTotalDevelopers(projectName):
     projectDetails = projectCollections.find_one({"name": projectName})
-    committersWithCount = commit_with_projectInfo_Collection.aggregate([
+    committers = commit_with_projectInfo_Collection.aggregate([
         {"$match": {"project_id_info.project_id": projectDetails['_id']}},
-        {"$group": {"_id": "$author_id", "commitCount": {"$sum": 1}}}
+        {"$group": {"_id": "$author_id"}}
     ])
 
-    developersCommitCount = defaultdict(int)
-    for entry in committersWithCount:
-        developersCommitCount[BRID.reverse_identity_dict[entry['_id']]] += entry['commitCount']
-
-    return len(developersCommitCount)
+    total_devs_in_project = set()
+    for a in committers:
+        total_devs_in_project.add(BRID.reverse_identity_dict[a["_id"]])
+    return len(total_devs_in_project)
 
 
 def findHeroDevsBasedOnCommits(projectName):

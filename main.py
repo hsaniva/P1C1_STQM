@@ -1,4 +1,5 @@
 import NewComers
+import socialHeroes
 import technical_heroes
 
 
@@ -52,8 +53,22 @@ def print_technical_heroes_based_on_lines(project_name):
     print(heroDevsBasedOnLines)
     print("--------------------------------------------------")
 
+def get_social_developers(project_name):
+    return socialHeroes.findSocialHerosBasedOnComments(project_name)
 
-print_technical_heroes_based_on_lines("kafka")
+def print_social_developers(project_name):
+    totalDevs = technical_heroes.getTotalDevelopers(project_name)
+    heroDevs = get_social_developers(project_name)
+    print("Hero Devs : ", len(heroDevs))
+    print("Total devs in Kafka : ", totalDevs)
+    print("Dev percentage : ", (len(heroDevs) / totalDevs) * 100)
+    print(heroDevs)
+    print("--------------------------------------------------")
+
+print_social_developers("kafka")
+# print_technical_hero_devs_based_on_commit("kafka")
+
+# print(socialHeroes.findSocialHerosBasedOnComments("kafka"))
 # projectList = ["freemarker","httpcomponents-core","httpcomponents-client","santuario-java",
 #                "commons-bcel", "commons-vfs", "commons-validator", "commons-io",
 #                "commons-collections", "xerces2-j"]
