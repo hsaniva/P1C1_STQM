@@ -7,6 +7,8 @@ import networkx as nx
 import numpy as np
 from pylab import rcParams
 from pymongo import MongoClient
+
+from Build_reverse_identity_dictionary import Build_reverse_identity_dictionary
 from technical_heroes import findOverallTechnicalDevelopers
 
 # import socialheroes
@@ -19,7 +21,8 @@ commit_with_projectInfo_Collection = db['commit_with_project_info']
 file_action_Collection = db["file_action"]
 comments_with_issue_and_project_info_collection = db["comments_with_issue_and_project_info"]
 issue_with_project_info_collection = db['issue_with_project_info']
-
+BRID = Build_reverse_identity_dictionary()
+BRID.reading_identity_and_people_and_building_reverse_identity_dictionary()
 
 def findMedian(l):
     # print("Developer comment length : ", len(l))
@@ -28,7 +31,7 @@ def findMedian(l):
     return median
 
 
-def findTechnoSocialHerosBasedOnComments(projectName):
+def findTechnoSocialHeroes(projectName):
     projectDetails = projectCollection.find_one({"name": projectName})
     # print(projectDetails)
     techHeros = findOverallTechnicalDevelopers(projectName)
@@ -42,11 +45,11 @@ def findTechnoSocialHerosBasedOnComments(projectName):
     )
 
     authorCommentCountDict = defaultdict(int)
+
     for comment in comments:
-        authorCommentCountDict[comment['author_id']] += 1
-    # total number of comments in project
-    # totalCommentsInProject = comments_with_issue_and_project_info_collection.count_documents({"issue_info.project_id_info.project_id":projectDetails['_id']})
-    # print(totalCommentsInProject)
+        authorCommentCountDict[BRID.reverse_identity_dict[comment['author_id']]] += 1
+    totalCommentsInProject = comments_with_issue_and_project_info_collection.count_documents(
+        {"issue_info.project_id_info.project_id": projectDetails['_id']})
 
     # Sort the dev lists
     developerCommentCounts = list(authorCommentCountDict.items())
@@ -54,10 +57,6 @@ def findTechnoSocialHerosBasedOnComments(projectName):
 
     # print("Developer Comment Count list :- ", developerCommentCounts)
     median = findMedian(developerCommentCounts)
-    print("---------------------------------------")
-    print("Median number of comments :- ", median)
-    print("---------------------------------------")
-
     socialHerosAboveMedian = set()
 
     i = 0
@@ -65,8 +64,5 @@ def findTechnoSocialHerosBasedOnComments(projectName):
         socialHerosAboveMedian.add(developerCommentCounts[i][0])
         i += 1
 
-    # print(socialHerosAboveMedian)
-    technoSocialheros = socialHerosAboveMedian.intersection(techHeros["heroDevsList"])
-
-    print("Total number of TechnoSocial Heros: ", len(technoSocialheros))
-    print(technoSocialheros)
+    technoSocialheros = socialHerosAboveMedian.intersection(techHeros)
+    return technoSocialheros

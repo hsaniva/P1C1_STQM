@@ -2,6 +2,8 @@ import NewComers
 import socialHeroes
 import socioTechnical_Heros
 import technical_heroes
+import technoSocialHeroes
+from superHeros import findSuperHeros
 
 
 def get_new_comers(project_name):
@@ -66,18 +68,40 @@ def print_social_developers(project_name):
     print(heroDevs)
     print("--------------------------------------------------")
 
+def get_technical_heroes(project_name):
+    return technical_heroes.findOverallTechnicalDevelopers(project_name)
+
+def print_technical_heroes(project_name):
+    technical_heroes = get_technical_heroes(project_name)
+    print("Total Technical Heroes : ", len(technical_heroes))
+    print(technical_heroes)
+    print("-------------------------------------")
+
 def get_socio_technical_heroes(project_name):
     return socioTechnical_Heros.findSocioTechnicalHeros(project_name)
 
 def print_socio_technical_heroes(project_name):
-    hero_devs = get_socio_technical_heroes(project_name)
-    print("Total number of socioTechnical Heros: ", len(hero_devs))
+    socioTechnicalHeroes = get_socio_technical_heroes(project_name)
+    print("Total number of socioTechnical Heros: ", len(socioTechnicalHeroes))
+    print(socioTechnicalHeroes)
 
-print_socio_technical_heroes("commons-collections")
-# print_social_developers("kafka")
-# print_technical_hero_devs_based_on_commit("kafka")
+def get_techno_social_heroes(project_name):
+    return technoSocialHeroes.findTechnoSocialHeroes(project_name)
 
-# print(socialHeroes.findSocialHerosBasedOnComments("kafka"))
+def print_techno_social_heroes(project_name):
+    technoSocialheros = get_techno_social_heroes(project_name)
+    print("Total number of TechnoSocial Heros: ", len(technoSocialheros))
+    print(technoSocialheros)
+
+def get_super_heroes(project_name):
+    return findSuperHeros(project_name)
+
+def print_super_heroes(project_name):
+    super_heroes = get_super_heroes(project_name)
+    print("Super Heroes are : ", len(super_heroes))
+    print(super_heroes)
+
+print_super_heroes("kafka")
 # projectList = ["freemarker","httpcomponents-core","httpcomponents-client","santuario-java",
 #                "commons-bcel", "commons-vfs", "commons-validator", "commons-io",
 #                "commons-collections", "xerces2-j"]

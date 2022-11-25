@@ -58,7 +58,7 @@ def findHeroDevsBasedOnCommits(projectName):
 
     totalCommitsInProject = commit_with_projectInfo_Collection.count_documents(
         {"project_id_info.project_id": projectDetails['_id']})
-    print("Total Number of commits in Project :- ", totalCommitsInProject)
+    # print("Total Number of commits in Project :- ", totalCommitsInProject)
 
     percent80_commits = totalCommitsInProject * 0.8
 
@@ -190,15 +190,6 @@ def findOverallTechnicalDevelopers(projectName):
     heroDevsBasedOnFile = findHeroDevsBasedOnFiles(projectName)
     heroDevsBasedOnLine = findHeroDevsBasedOnLines(projectName)
     # """Apply set intersection to find overall technical heros"""
-    ans = dict()
-    ans["heroDevsBasedOnCommit"] = len(heroDevsBasedOnCommit)
-    ans["heroDevsBasedOnFile"] = len(heroDevsBasedOnFile)
-    ans["heroDevsBasedOnLine"] = len(heroDevsBasedOnLine)
-
     heroDevsOverall = heroDevsBasedOnLine.intersection(heroDevsBasedOnCommit, heroDevsBasedOnFile)
-    print("Overall Technical Heros : ", len(heroDevsOverall))
-    print("------------------------------------------")
-    # print(heroDevsOverall)
-    ans["heroDevsOverall"] = len(heroDevsOverall)
-    ans["heroDevsList"] = heroDevsOverall
-    return ans
+
+    return heroDevsOverall
