@@ -115,7 +115,4 @@ def get_correlation_of_degree_of_newcomer_becoming_heroes(project_name):
     return correlation_of_degree_of_newcomer_becoming_heroes(project_name)
 
 def print_get_correlation_of_degree_of_newcomer_becoming_heroes(project_name):
-    print("Correlation coefficient of newcomer degree ",
-          get_correlation_of_degree_of_newcomer_becoming_heroes(project_name))
-
-print_get_correlation_of_degree_of_newcomer_becoming_heroes("kafka")
+    print("Correlation coefficient of newcomer degree ", get_correlation_of_degree_of_newcomer_becoming_heroes(project_name))
