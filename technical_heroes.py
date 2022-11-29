@@ -37,6 +37,11 @@ def getTotalDevelopers(projectName):
 
 
 def findHeroDevsBasedOnCommits(projectName):
+    """
+    Returns list of hero developers based on their
+    :param projectName: Project name
+    :return: list of hero devs
+    """
     projectDetails = projectCollections.find_one({"name": projectName})
 
     committersWithCount = commit_with_projectInfo_Collection.aggregate([
@@ -72,11 +77,12 @@ def findHeroDevsBasedOnCommits(projectName):
     return heroDevsBasedOnCommit
 
 
-"""**Task - 2 : Find the number of files updated by each Developer**
-Find list of commits done by each developer
-"""
-
 def __get_developers_commits(project_id):
+    """
+    Returns all the commits made for a project
+    :param project_id: ID for the project.
+    :return: Cursor object for the list of commits.
+    """
     developerCommits = defaultdict(set)
     commits = commit_with_projectInfo_Collection.find({"project_id_info.project_id": project_id})
     for commit in commits:
@@ -84,6 +90,11 @@ def __get_developers_commits(project_id):
     return developerCommits
 
 def findHeroDevsBasedOnFiles(projectName):
+    """
+    Returns list of hero devs based on files
+    :param projectName: Project name
+    :return: list of devs based on files
+    """
     projectDetails = projectCollections.find_one({"name": projectName})
     # Make data structure ->
     # {
@@ -119,19 +130,12 @@ def findHeroDevsBasedOnFiles(projectName):
     return heroDevsBasedOnFiles
 
 
-"""**Total Number of Lines Added overall (Only Lines added are considered)**
-
-"""
-
-
 def findHeroDevsBasedOnLines(projectName):
-    # Make data structure ->
-    # {
-    #     developer1 : numberOfLinesAdded,
-    #     developer2 : numberOfLinesAdded,
-    # }
-    """Find number of lines changed by each developer in each commmit"""
-
+    """
+    Finds list of hero developers based on the lines of code that they committed.
+    :param projectName: Project name
+    :return: hero devs list
+    """
     developerLinesDict = defaultdict(int)
     projectDetails = projectCollections.find_one({"name": projectName})
     developerCommits = __get_developers_commits(projectDetails["_id"])
@@ -185,6 +189,11 @@ def findHeroDevsBasedOnLines(projectName):
 
 
 def findOverallTechnicalDevelopers(projectName):
+    """
+    Returns the list of developers that are heroes in all sectors.
+    :param projectName: Project name
+    :return: list of overall technical developers
+    """
     heroDevsBasedOnCommit = findHeroDevsBasedOnCommits(projectName)
     heroDevsBasedOnFile = findHeroDevsBasedOnFiles(projectName)
     heroDevsBasedOnLine = findHeroDevsBasedOnLines(projectName)
