@@ -60,8 +60,10 @@ def findNewComers(projectName):
 def getDates(projectName):
     """
     Calculates dates and returns start and end date
+    sDate : 3 years post the start of the project
+    eDate : 6 months after sDate
     :param projectName: Project name
-    :return:
+    :return: start and end dates
     """
     startDate = commit_with_project_info.find({"project_name_info.name": projectName})\
         .sort([("committer_date",1)]).limit(1)

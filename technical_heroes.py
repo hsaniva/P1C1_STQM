@@ -1,17 +1,12 @@
-import datetime
-import itertools
+"""
+Authors: Avinash Gaikwad, Sanghmitra Tamrakar, Neha Sarnaik, Ishan Srivastava
+P1-C1
+"""
 from collections import defaultdict
-
-import matplotlib.pyplot as plt
-import networkx as nx
-import numpy as np
-from pylab import rcParams
 from pymongo import MongoClient
-
 from Build_reverse_identity_dictionary import Build_reverse_identity_dictionary
 
 cluster = MongoClient("mongodb://localhost:27017")
-
 db = cluster["smartshark"]
 
 projectCollections = db["project"]
@@ -19,12 +14,16 @@ commit_with_projectInfo_Collection = db['commit_with_project_info']
 file_action_Collection = db["file_action"]
 
 total_developers_in_project = 0
-# developerCommits = defaultdict(set)
 
 BRID = Build_reverse_identity_dictionary()
 BRID.reading_identity_and_people_and_building_reverse_identity_dictionary()
 
 def getTotalDevelopers(projectName):
+    """
+    Returns the total developers
+    :param projectName: Project name
+    :return: total developers
+    """
     projectDetails = projectCollections.find_one({"name": projectName})
     committers = commit_with_projectInfo_Collection.aggregate([
         {"$match": {"project_id_info.project_id": projectDetails['_id']}},

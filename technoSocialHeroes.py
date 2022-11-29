@@ -1,18 +1,7 @@
-import datetime
-import itertools
 from collections import defaultdict
-
-import matplotlib.pyplot as plt
-import networkx as nx
-import numpy as np
-from pylab import rcParams
 from pymongo import MongoClient
-
 from Build_reverse_identity_dictionary import Build_reverse_identity_dictionary
 from technical_heroes import findOverallTechnicalDevelopers
-
-# import socialheroes
-
 
 cluster = MongoClient("mongodb://localhost:27017")
 db = cluster["smartshark"]

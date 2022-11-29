@@ -1,9 +1,12 @@
+"""
+Authors: Avinash Gaikwad, Sanghmitra Tamrakar, Neha Sarnaik, Ishan Srivastava
+P1-C1
+"""
 from collections import defaultdict
 
 from pymongo import MongoClient
 
 from Build_reverse_identity_dictionary import Build_reverse_identity_dictionary
-from technical_heroes import findOverallTechnicalDevelopers
 from socialHeroes import findSocialHerosBasedOnComments
 
 
@@ -16,12 +19,22 @@ BRID = Build_reverse_identity_dictionary()
 BRID.reading_identity_and_people_and_building_reverse_identity_dictionary()
 
 def findMedian(l):
+    """
+    Finds median from the given list
+    :param l: List
+    :return: median value from the list.
+    """
     # print("Developer comment length : ", len(l))
     mid = len(l) // 2
     median = (l[mid][1] + l[~mid][1]) / 2
     return median
 
 def findSocioTechnicalHeros(projectName):
+    """
+    Returns social and technical heroes
+    :param projectName: Project name
+    :return: List of socio-technical heroes
+    """
     socialHeroes = findSocialHerosBasedOnComments(projectName)
     projectDetails = projectCollection.find_one({"name": projectName})
     committersWithCount = commit_with_projectInfo_Collection.aggregate([

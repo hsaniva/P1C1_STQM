@@ -29,7 +29,7 @@ def generate_graph(dictionary):
     """
     Takes dictionary as input and generates graph
     :param dictionary: dictionary
-    :return:
+    :return: networkx graph
     """
     parent_graph = nx.Graph()
     for key, devs in dictionary.items():

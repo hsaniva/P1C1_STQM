@@ -1,3 +1,7 @@
+"""
+Authors: Avinash Gaikwad, Sanghmitra Tamrakar, Neha Sarnaik, Ishan Srivastava
+P1-C1
+"""
 from collections import defaultdict
 from pymongo import MongoClient
 from Build_reverse_identity_dictionary import Build_reverse_identity_dictionary
@@ -13,6 +17,11 @@ issue_with_project_info_collection = db['issue_with_project_info']
 
 
 def findSocialHerosBasedOnComments(projectName):
+    """
+    Returns list of hero devs based on the comments they commentted on issues.
+    :param projectName: Project name
+    :return: List of hero developers
+    """
     projectDetails = project.find_one({"name": projectName})
     comments = comments_with_issue_and_project_info_collection.find(
         {
