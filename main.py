@@ -7,8 +7,10 @@ import socialHeroes
 import socioTechnical_Heros
 import technical_heroes
 import technoSocialHeroes
+from centralities import eigenVectorCentralityForTechnicalCollab
 from newcomers_relations_with_heroes import create_and_get_social_collaboration_dict_heroes, \
     newcomers_heroes_social_graphs_relation, correlation_of_degree_of_newcomer_becoming_heroes
+from newcomers_technical_collaboration_graph import create_and_get_technical_collaboration_dict_newcomers
 from superHeros import findSuperHeros
 
 
@@ -228,3 +230,4 @@ def print_get_correlation_of_degree_of_newcomer_becoming_heroes(project_name):
     """
     print("Correlation coefficient of newcomer degree ", get_correlation_of_degree_of_newcomer_becoming_heroes(project_name))
 
+print(eigenVectorCentralityForTechnicalCollab("pig"))

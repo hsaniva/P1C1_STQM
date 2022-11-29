@@ -6,6 +6,7 @@ import networkx as nx
 
 from newcomers_social_collaboration_graph import create_and_get_social_collaboration_dict_newcomers
 from networkx_utils import generate_graph
+from newcomers_technical_collaboration_graph import create_and_get_technical_collaboration_dict_newcomers
 
 
 def find_degree_centrality(graph):
@@ -33,16 +34,15 @@ def find_eigenvector_centrality(graph):
     return list(eigenCentralities.items())
 
 
-# def eigenVectorCentralityForTechnicalCollab(projectName):
-#     d = create_and_get_technical_collaboration_dict_newcomers(projectName)
-#     G = generate_graph(d)
-#
-#     eigenCentralities = nx.eigenvector_centrality(G)
-#
-#     for devId, centrality in eigenCentralities.items():
-#         print(devId ," -> ", centrality)
-#     return list(eigenCentralities.items())
-#
+def eigenVectorCentralityForTechnicalCollab(projectName):
+    d = create_and_get_technical_collaboration_dict_newcomers(projectName)
+    G = generate_graph(d)
+
+    eigenCentralities = nx.eigenvector_centrality(G)
+    for key, value in eigenCentralities.items():
+        eigenCentralities[key] = round(value, 2)
+    return eigenCentralities
+
 # def degreeCentralityForTechnicalCollab(projectName):
 #     d = create_and_get_technical_collaboration_dict_newcomers(projectName)
 #     G = generate_graph(d)
