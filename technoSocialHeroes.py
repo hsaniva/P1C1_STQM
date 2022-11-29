@@ -1,3 +1,7 @@
+"""
+Authors: Avinash Gaikwad, Sanghmitra Tamrakar, Neha Sarnaik, Ishan Srivastava
+P1-C1
+"""
 from collections import defaultdict
 from pymongo import MongoClient
 from Build_reverse_identity_dictionary import Build_reverse_identity_dictionary
@@ -14,6 +18,11 @@ BRID = Build_reverse_identity_dictionary()
 BRID.reading_identity_and_people_and_building_reverse_identity_dictionary()
 
 def findMedian(l):
+    """
+    Finds the median from the given list
+    :param l: list
+    :return: median value
+    """
     # print("Developer comment length : ", len(l))
     mid = len(l) // 2
     median = (l[mid][1] + l[~mid][1]) / 2
@@ -21,6 +30,11 @@ def findMedian(l):
 
 
 def findTechnoSocialHeroes(projectName):
+    """
+    Returns list of technical social heroes
+    :param projectName: Project name
+    :return: list of techno-socio heroes
+    """
     projectDetails = projectCollection.find_one({"name": projectName})
     # print(projectDetails)
     techHeros = findOverallTechnicalDevelopers(projectName)
