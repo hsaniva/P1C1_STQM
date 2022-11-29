@@ -1,3 +1,7 @@
+"""
+Authors: Avinash Gaikwad, Sanghmitra Tamrakar, Neha Sarnaik, Ishan Srivastava
+P1-C1
+"""
 import networkx as nx
 import numpy as np
 from pylab import rcParams
@@ -7,6 +11,10 @@ import matplotlib.pyplot as plt
 import itertools
 
 def plot_graph(parentGraph):
+    """
+    Function for plotting the input graph beautifully.
+    :param parentGraph: networkx graph
+    """
     rcParams['figure.figsize'] = 14, 10
     pos = nx.spring_layout(parentGraph, scale=20, k=3 / np.sqrt(parentGraph.order()))
     d = dict(parentGraph.degree)
@@ -18,6 +26,11 @@ def plot_graph(parentGraph):
 
 
 def generate_graph(dictionary):
+    """
+    Takes dictionary as input and generates graph
+    :param dictionary: dictionary
+    :return:
+    """
     parent_graph = nx.Graph()
     for key, devs in dictionary.items():
         temp_graph = nx.Graph()
