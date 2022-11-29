@@ -1,3 +1,7 @@
+"""
+Authors: Avinash Gaikwad, Sanghmitra Tamrakar, Neha Sarnaik, Ishan Srivastava
+P1-C1
+"""
 from collections import defaultdict
 
 import networkx as nx
@@ -5,13 +9,12 @@ import numpy as np
 from pymongo import MongoClient
 
 from Build_reverse_identity_dictionary import Build_reverse_identity_dictionary
-from NewComers import findNewComers
 from centralities import find_degree_centrality
 from networkx_utils import generate_graph
 from newcomers_social_collaboration_graph import create_and_get_social_collaboration_dict_newcomers
 from socialHeroes import findSocialHerosBasedOnComments
 from socioTechnical_Heros import findSocioTechnicalHeros
-from superHeros import findSuperHeros
+
 from technical_heroes import findOverallTechnicalDevelopers
 from technoSocialHeroes import findTechnoSocialHeroes
 
@@ -23,6 +26,11 @@ db = cluster["smartshark"]
 issue_comment = db["issue_comment"]
 
 def create_and_get_social_collaboration_dict_heroes(project_name):
+    """
+    Retrieves all kinds of heroes and replaces their IDs with BRID
+    :param project_name: Project name
+    :return: list of all kinds of developers
+    """
     issue_devs = defaultdict(set)
     devs = findOverallTechnicalDevelopers(project_name)\
         .union(findSocialHerosBasedOnComments(project_name))\
@@ -38,6 +46,12 @@ def create_and_get_social_collaboration_dict_heroes(project_name):
 
 
 def newcomers_heroes_social_graphs_relation(projectName):
+    """
+    Returns a dictionary which specifies the newcomers
+    degree centrality change due to the introduction of heroes present in the project.
+    :param projectName: Project name
+    :return: list of newcomers with their change in degree centrality
+    """
     newcomers_dict = create_and_get_social_collaboration_dict_newcomers(projectName)
     heroes_dict = create_and_get_social_collaboration_dict_heroes(projectName)
 
@@ -61,6 +75,11 @@ def newcomers_heroes_social_graphs_relation(projectName):
     return final_ans_dict
 
 def correlation_of_degree_of_newcomer_becoming_heroes(projectName):
+    """
+    Returns correlation coefficient of newcomers who later on became heroes
+    :param projectName: Project name
+    :return: correlation coefficient
+    """
     newcomers_dict = create_and_get_social_collaboration_dict_newcomers(projectName)
     heroes_dict = create_and_get_social_collaboration_dict_heroes(projectName)
 

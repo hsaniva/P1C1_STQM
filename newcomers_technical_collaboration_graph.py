@@ -1,3 +1,7 @@
+"""
+Authors: Avinash Gaikwad, Sanghmitra Tamrakar, Neha Sarnaik, Ishan Srivastava
+P1-C1
+"""
 from collections import defaultdict
 from NewComers import findNewComers
 from pymongo import MongoClient
@@ -10,6 +14,12 @@ file = db["file"]
 
 
 def create_and_get_technical_collaboration_dict_newcomers(projectName):
+    """
+    Fetches list of newcomers, finds out all of their commits in the files and creates a
+    dictionary where key is the common file name and value is the list of newcomers
+    :param projectName: Project name
+    :return: dictionary(file, [list of newcomers])
+    """
     newComers = findNewComers(projectName)
     file_devs_dict = defaultdict(set)
 

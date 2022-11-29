@@ -1,3 +1,7 @@
+"""
+Authors: Avinash Gaikwad, Sanghmitra Tamrakar, Neha Sarnaik, Ishan Srivastava
+P1-C1
+"""
 from collections import defaultdict
 
 from pymongo import MongoClient
@@ -14,6 +18,11 @@ issue_comment = db["issue_comment"]
 project = db['project']
 
 def create_and_get_social_collaboration_dict_newcomers(project_name):
+    """
+    Finds all the newcomers from the project and replaces their IDs with the BRID function.
+    :param project_name: Project name
+    :return: list of newcomers
+    """
     issue_new_comer = defaultdict(set)
     new_comers = findNewComers(project_name)
     for new_comer in new_comers:

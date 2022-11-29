@@ -27,8 +27,6 @@ def print_new_comers(project_name):
     """
     Function for printing list of newcomers present in the project.
     :param project_name: Project name in string
-    :returns list of newcomers present in the project
-    :rtype list
     """
     for new_comer in get_new_comers(project_name):
         print(new_comer)
@@ -47,8 +45,6 @@ def get_technical_hero_devs_based_on_commit(project_name):
     """
     Responsible for finding out the technical developers present in the project.
     :param project_name: Project name
-    :return: list of developers
-    :rtype: list
     """
     return technical_heroes.findHeroDevsBasedOnCommits(project_name)
 
@@ -56,7 +52,6 @@ def print_technical_hero_devs_based_on_commit(project_name):
     """
     Prints the :get_technical_hero_devs_based_on_commit list
     :param project_name: Project name
-    :returns: none
     """
     totalDevs = technical_heroes.getTotalDevelopers(project_name)
     heroDevsBasedOnCommit = technical_heroes.findHeroDevsBasedOnCommits(project_name)

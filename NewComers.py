@@ -1,3 +1,7 @@
+"""
+Authors: Avinash Gaikwad, Sanghmitra Tamrakar, Neha Sarnaik, Ishan Srivastava
+P1-C1
+"""
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from pymongo import MongoClient
@@ -13,6 +17,11 @@ commit_with_project_info = db['commit_with_project_info']
 
 
 def findNewComers(projectName):
+    """
+    return list of newcomers
+    :param projectName: Project name
+    :return: list of newcomers
+    """
     projectDetails = project.find_one({"name": projectName})
 
     startDate , endDate = getDates(projectName)
@@ -49,6 +58,11 @@ def findNewComers(projectName):
     return newComers
 
 def getDates(projectName):
+    """
+    Calculates dates and returns start and end date
+    :param projectName: Project name
+    :return:
+    """
     startDate = commit_with_project_info.find({"project_name_info.name": projectName})\
         .sort([("committer_date",1)]).limit(1)
     sDate = datetime.today()
