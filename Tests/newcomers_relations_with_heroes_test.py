@@ -1,0 +1,9 @@
+import pytest
+from bson import ObjectId
+
+from newcomers_relations_with_heroes import newcomers_heroes_social_graphs_relation
+
+kafka_new_comers = {ObjectId('636529d5e9a99c9121bb2f16'): 11.17717003567182, ObjectId('636529d6e9a99c9121bc9117'): 65.06024096385542, ObjectId('636529d6e9a99c9121bc982c'): 65.06024096385542, ObjectId('636529d6e9a99c9121bc97fd'): 42.75862068965518, ObjectId('636529d6e9a99c9121bc5fc9'): 9.1566265060241, ObjectId('636529d6e9a99c9121bb945b'): 18.226600985221676, ObjectId('636529d6e9a99c9121bc92ae'): 39.10491562729273, ObjectId('636529d6e9a99c9121bc9f21'): 65.06024096385542, ObjectId('636529d6e9a99c9121bc9831'): 65.06024096385542, ObjectId('636529d6e9a99c9121bc9108'): 47.962382445141074, ObjectId('636529d6e9a99c9121bc9114'): 65.06024096385542, ObjectId('636529d6e9a99c9121bbedb5'): 50.93596059113301, ObjectId('636529d6e9a99c9121bc911b'): 34.95297805642633, ObjectId('636529d6e9a99c9121bc92a1'): 65.06024096385542, ObjectId('636529d6e9a99c9121bc90f1'): 30.616509926854757, ObjectId('636529d6e9a99c9121bc9f1a'): 65.06024096385542, ObjectId('636529d5e9a99c9121bb43f5'): 46.33620689655173, ObjectId('636529d6e9a99c9121bc9118'): 65.06024096385542, ObjectId('636529d6e9a99c9121bc9f20'): 65.06024096385542, ObjectId('636529d6e9a99c9121bba37f'): 0, ObjectId('636529d6e9a99c9121bbcfed'): 0, ObjectId('636529d6e9a99c9121bc9f1b'): 0, ObjectId('636529d6e9a99c9121bc9830'): 0, ObjectId('636529d6e9a99c9121bbb43a'): 0, ObjectId('636529d6e9a99c9121bc9f22'): 0, ObjectId('636529d6e9a99c9121bc92a5'): 0, ObjectId('636529d6e9a99c9121bc9f1e'): 0, ObjectId('636529d6e9a99c9121bc92a4'): 0, ObjectId('636529d5e9a99c9121bb2774'): 0, ObjectId('636529d6e9a99c9121bc982b'): 0}
+@pytest.mark.parametrize("project_name, expected_output", [("kafka", kafka_new_comers)])
+def test_newcomers_heroes_social_graphs_relation(project_name, expected_output):
+    assert expected_output == newcomers_heroes_social_graphs_relation(project_name)

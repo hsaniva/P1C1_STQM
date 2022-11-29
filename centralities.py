@@ -64,8 +64,8 @@ def eigenVectorCentralityForSocialCollab(projectName):
 
     eigenCentralities = nx.eigenvector_centrality(G)
 
-    for devId, centrality in eigenCentralities.items():
-        print(devId ," -> ", centrality)
+    for key, value in eigenCentralities.items():
+        eigenCentralities[key] = round(value, 2)
     return eigenCentralities
 
 def degreeCentralityForSocialCollab(projectName):
