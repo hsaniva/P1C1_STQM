@@ -7,7 +7,8 @@ import socialHeroes
 import socioTechnical_Heros
 import technical_heroes
 import technoSocialHeroes
-from centralities import eigenVectorCentralityForTechnicalCollab, eigenVectorCentralityForSocialCollab
+from centralities import eigenVectorCentralityForTechnicalCollab, eigenVectorCentralityForSocialCollab, \
+    degreeCentralityForTechnicalCollab, degreeCentralityForSocialCollab
 from newcomers_relations_with_heroes import create_and_get_social_collaboration_dict_heroes, \
     newcomers_heroes_social_graphs_relation, correlation_of_degree_of_newcomer_becoming_heroes
 from newcomers_social_collaboration_graph import create_and_get_social_collaboration_dict_newcomers
@@ -222,7 +223,8 @@ def get_correlation_of_degree_of_newcomer_becoming_heroes(project_name):
     :param project_name: Project name
     :return: Returns Correlation coefficient for newcomers who became heroes later on.
     """
-    return correlation_of_degree_of_newcomer_becoming_heroes(project_name)
+    corr_coeff = correlation_of_degree_of_newcomer_becoming_heroes(project_name)
+    return (corr_coeff[0][1] + corr_coeff[1][0])/2
 
 def print_get_correlation_of_degree_of_newcomer_becoming_heroes(project_name):
     """
@@ -231,4 +233,34 @@ def print_get_correlation_of_degree_of_newcomer_becoming_heroes(project_name):
     """
     print("Correlation coefficient of newcomer degree ", get_correlation_of_degree_of_newcomer_becoming_heroes(project_name))
 
-print(newcomers_heroes_social_graphs_relation("kafka"))
+def eigenvector_centrality_of_newcomers_in_technical_collaboration(project_name):
+    """
+    Return list of eigenvector centrality for their technical collaboration.
+    :param project_name: Project name
+    :return: list of newcomers with eigenvector centralities
+    """
+    return eigenVectorCentralityForTechnicalCollab(project_name)
+
+def eigenvector_centrality_of_newcomers_in_social_collaborations(project_name):
+    """
+    Return list of eigenvector centrality for their social collaboration.
+    :param project_name: Project name
+    :return:  list of newcomers with eigenvector centralities
+    """
+    return eigenVectorCentralityForSocialCollab(project_name)
+
+def degree_centrality_of_newcomers_in_technical_collaboration(project_name):
+    """
+    Return list of degree centrality for their technical collaboration.
+    :param project_name: Project name
+    :return: list of newcomers with degree centralities
+    """
+    return degreeCentralityForTechnicalCollab(project_name)
+
+def degree_centrality_of_newcomers_in_social_collaboration(project_name):
+    """
+    Returns degree centrality of newcomers in social collaborations
+    :param project_name: Project name
+    :return: degree centralities
+    """
+    return degreeCentralityForSocialCollab(project_name)

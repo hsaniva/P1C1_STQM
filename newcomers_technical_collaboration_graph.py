@@ -36,6 +36,6 @@ def create_and_get_technical_collaboration_dict_newcomers(projectName):
                 for file_id in file_ids:
                     file_name = file.find_one({"_id": file_id["file_id"]}, {"path": 1})
                     file_name = file_name["path"].split("/")[-1]
-                    file_devs_dict[file_name].add(temp)
+                    file_devs_dict[file_name].add(newComer)
     return file_devs_dict
 
