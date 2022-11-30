@@ -13,8 +13,8 @@ def test_new_comers(project_name, expected_output):
     assert expected_output == findNewComers(project_name)
 
 
-kafka_dates = (datetime.datetime(2014, 8, 1, 23, 41, 24), datetime.datetime(2015, 2, 1, 23, 41, 24))
-pig_dates = (datetime.datetime(2012, 3, 5, 1, 4, 6), datetime.datetime(2012, 9, 5, 1, 4, 6))
+kafka_dates = (datetime(2014, 8, 1, 23, 41, 24), datetime(2015, 2, 1, 23, 41, 24))
+pig_dates = (datetime(2012, 3, 5, 1, 4, 6), datetime(2012, 9, 5, 1, 4, 6))
 @pytest.mark.parametrize("project_name, expected_output", [("kafka", kafka_dates), ("pig", pig_dates)])
 def test_get_dates(project_name, expected_output):
     assert expected_output == getDates(project_name)
